@@ -1,0 +1,115 @@
+----sentencia sql:
+CREATE TABLE FactSales (
+    SalesKey INT PRIMARY KEY,
+    DateKey DATETIME,
+    channelKey INT,
+    StoreKey INT,
+    ProductKey INT,
+    PromotionKey INT,
+    CurrencyKey INT,
+    CustomerKey INT, 
+    UnitCost FLOAT,
+    UnitPrice FLOAT,
+    SalesQuantity INT,
+    ReturnQuantity INT,
+    ReturnAmount FLOAT,
+    DiscountQuantity INT,
+    DiscountAmount FLOAT,
+    TotalCost FLOAT,
+    SalesAmount FLOAT
+);
+CREATE TABLE DimDate (
+    DateKey DATETIME PRIMARY KEY,
+    CalendarYear INT,
+    CalendarYearLabel VARCHAR(255),
+    CalendarHalfYearLabel VARCHAR(255),
+    CalendarQuarterLabel VARCHAR(255),
+    CalendarMonthLabel VARCHAR(255),
+    CalendarWeekLabel VARCHAR(255),
+    CalendarDayOfWeekLabel VARCHAR(255),
+    FiscalYear INT,
+    FiscalYearLabel VARCHAR(255),
+    FiscalHalfYearLabel VARCHAR(255),
+    FiscalQuarterLabel VARCHAR(255),
+    FiscalMonthLabel VARCHAR(255),
+    IsWorkDay VARCHAR(50),
+    IsHoliday VARCHAR(50),
+    EuropeSeason VARCHAR(255),
+    NorthAmericaSeason VARCHAR(255),
+    AsiaSeason VARCHAR(255),
+    MonthNumber INT,
+    CalendarDayOfWeekNumber INT
+);
+CREATE TABLE DimStore (
+    StoreKey INT PRIMARY KEY,
+    GeographyKey INT,
+    StoreManager INT,
+    StoreType VARCHAR(255),
+    StoreName VARCHAR(255),
+    Status VARCHAR(50),
+    OpenDate DATETIME,
+    CloseDate DATETIME,
+    EntityKey INT,
+    StorePhone VARCHAR(50),
+    StoreFax VARCHAR(50),
+    CloseReason VARCHAR(255),
+    EmployeeCount INT,
+    SellingAreaSize INT,
+    LastRemodelDate DATETIME,
+    EmployeeKey INT
+);
+CREATE TABLE DimProduct (
+    ProductKey INT PRIMARY KEY,
+    ProductName VARCHAR(255),
+    ProductDescription VARCHAR(255),
+    ProductSubcategoryKey INT,
+    Manufacturer VARCHAR(255),
+    BrandName VARCHAR(255),
+    ClassID INT,
+    ClassName VARCHAR(255),
+    StyleID INT,
+    StyleName VARCHAR(255),
+    ColorID INT,
+    ColorName VARCHAR(255),
+    Weight FLOAT,
+    WeightUnitMeasureID VARCHAR(50),
+    UnitOfMeasureID INT,
+    UnitOfMeasureName VARCHAR(255),
+    StockTypeID INT,
+    StockTypeName VARCHAR(255),
+    UnitCost FLOAT,
+    UnitPrice FLOAT,
+    AvailableForSaleDate DATETIME,
+    Status VARCHAR(50)
+);
+CREATE TABLE DimCustomer (
+    CustomerKey INT PRIMARY KEY,
+    GeographyKey INT,
+    FirstName VARCHAR(255),
+    LastName VARCHAR(255),
+    BirthDate DATETIME,
+    MaritalStatus VARCHAR(50),
+    Gender VARCHAR(10),
+    YearlyIncome FLOAT,
+    TotalChildren FLOAT,
+    NumberChildrenAtHome FLOAT,
+    Education VARCHAR(255),
+    Occupation VARCHAR(255),
+    HouseOwnerFlag FLOAT,
+    NumberCarsOwned FLOAT
+);
+ALTER TABLE FactSales
+ADD CONSTRAINT FK_FactSales_DateKey
+FOREIGN KEY (DateKey) REFERENCES DimDate(DateKey);
+
+ALTER TABLE FactSales
+ADD CONSTRAINT FK_FactSales_StoreKey
+FOREIGN KEY (StoreKey) REFERENCES DimStore(StoreKey);
+
+ALTER TABLE FactSales
+ADD CONSTRAINT FK_FactSales_ProductKey
+FOREIGN KEY (ProductKey) REFERENCES DimProduct(ProductKey);
+
+ALTER TABLE FactSales
+ADD CONSTRAINT FK_FactSales_CustomerKey
+FOREIGN KEY (CustomerKey) REFERENCES DimCustomer(CustomerKey);
